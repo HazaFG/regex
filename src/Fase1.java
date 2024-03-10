@@ -14,7 +14,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Main {
+public class Fase1 {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -30,7 +30,7 @@ public class Main {
             }
 
             // Expresión regular para identificar números válidos
-            String regex = "\\b(\\d+([,.]\\d+([\\w+.]\\d*)?)?)\\b%?";
+            String regex = "\\bSELECT\\b.*\\bFROM\\b";
 
             // Patrón y matcher para buscar números en el texto
             Pattern pattern = Pattern.compile(regex);
