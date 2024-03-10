@@ -1,3 +1,16 @@
+// Ingenieria en Desarrollo de Software
+// Programacion de Sistemas
+// IDS 6 TM
+// 09/03/2024
+
+// Integrantes:
+// Mario Alberto Castellanos Martinez
+// Hazael Flores Gastelum
+// Ricardo Garayzar Ortega
+// Andrea Lucero Trasviña
+// Miguel Angel Lazcano Ortega
+// Carlos André Campa Molina
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
