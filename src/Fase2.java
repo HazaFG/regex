@@ -1,27 +1,20 @@
-// Ingenieria en Desarrollo de Software
-// Programacion de Sistemas
-// IDS 6 TM
-// 09/03/2024
-
-// Integrantes:
-// Mario Alberto Castellanos Martinez
-// Hazael Flores Gastelum
-// Ricardo Garayzar Ortega
-// Andrea Lucero Trasviña
-// Miguel Angel Lazcano Ortega
-// Carlos André Campa Molina
-
-
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Fase2 {
 
     private static int valorIdentificador = 401;
-    
+    private static int valorConstante = 600;
+    private static Map<String, Integer> identificadores = new HashMap<>();
+    private static Map<String, Integer> constantes = new HashMap<>();
+
     public static void main(String[] args) {
-        
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -43,15 +36,14 @@ public class Fase2 {
             System.out.printf("| %-4s | %-10s | %-15s | %-10s | %-10s%n", "No°", "Linea", "TOKEN", "Tipo", "Código");
 
             // Buscar y mostrar tokens encontrados con su tipo y código
-            i = buscarYMostrarTokens(textoIngresado.toString(), 
-            "\\b(SELECT|FROM|WHERE|AND|OR|INSERT|UPDATE|DELETE|IN|CREATE|TABLE|CHAR|NUMERIC|NOT|NULL|CONSTRAINT|KEY|PRIMARY|FOREIGN|REFERENCES|INTO)\\b|"
-            + "[,‘]|"
-            + "[+\\-*/]|"
-            + ">=?|<=?|[><=]|"
-            + "'\\w+'|"
-            + "\\b\\d+\\b|"
-            + "\\b[a-zA-Z0-9]+\\b", i);
-
+            i = buscarYMostrarTokens(textoIngresado.toString(),
+                    "\\b(SELECT|FROM|WHERE|AND|OR|INSERT|UPDATE|DELETE|IN|CREATE|TABLE|CHAR|NUMERIC|NOT|NULL|CONSTRAINT|KEY|PRIMARY|FOREIGN|REFERENCES|INTO)\\b|"
+                            + "[,‘]|"
+                            + "[+\\-*/]|"
+                            + ">=?|<=?|[><=]|"
+                            + "'\\w+'|"
+                            + "\\b\\d+\\b|"
+                            + "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b", i);
 
             System.out.print("\n¿Quieres repetir el proceso? (1: Sí, 2: No): ");
 
@@ -82,7 +74,8 @@ public class Fase2 {
             int lineMatch = obtenerLineaCoincidente(texto, matcher.start());
             String token = matcher.group();
             TipoValor tipoValor = determinarTipoYValor(token);
-            System.out.printf("| %-4s | %-10s | %-15s | %-10s | %-10s%n", i, lineMatch, token, tipoValor.getTipo(), tipoValor.getValor());
+            System.out.printf("| %-4s | %-10s | %-15s | %-10s | %-10s%n", i, lineMatch, token, tipoValor.getTipo(),
+                    tipoValor.getValor());
             i++;
         }
 
@@ -175,22 +168,29 @@ public class Fase2 {
                 break;
         }
 
-            // Identificar constantes alfanuméricas
+        // Identificar constantes alfanuméricas
         if (palabra.matches("'\\w+'")) {
-            return new TipoValor(6, 62); // Constante alfanumérica
+            return new TipoValor(6, obtenerCodigoConstante(palabra, constantes));
         }
 
         // Identificar constantes numéricas
         if (palabra.matches("\\b\\d+\\b")) {
-            return new TipoValor(6, 61); // Constante numérica
+            return new TipoValor(6, obtenerCodigoConstante(palabra, constantes));
         }
 
         // Identificar identificadores
         if (palabra.matches("\\b[a-zA-Z_]\\w*\\b")) {
-            return new TipoValor(4, valorIdentificador++); // Identificador (inicia en 401)
+            return new TipoValor(4, obtenerCodigoConstante(palabra, identificadores));
         }
 
         return new TipoValor(0, 0);
+    }
+
+    private static int obtenerCodigoConstante(String constante, Map<String, Integer> mapa) {
+        if (!mapa.containsKey(constante)) {
+            mapa.put(constante, constante.startsWith("'") ? valorConstante++ : valorIdentificador++);
+        }
+        return mapa.get(constante);
     }
 
     // Clase para representar el tipo y valor de un token
