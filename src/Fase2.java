@@ -141,8 +141,16 @@ public class Fase2 {
                 return new TipoValor(1, 27);
             case "INTO":
                 return new TipoValor(1, 28);
+            case "VALUES":
+                return new TipoValor(1, 29);
             case ",":
                 return new TipoValor(5, 50);
+            case ".":
+                return new TipoValor(5, 51);
+            case "(":
+                return new TipoValor(5, 52);
+            case ")":
+                return new TipoValor(5, 53);
             case "‘":
                 return new TipoValor(5, 54);
             case "+":
