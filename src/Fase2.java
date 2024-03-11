@@ -26,6 +26,7 @@ public class Fase2 {
         public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+        StringBuilder textoIngresado;
 
         while (true) {
             valorIdentificador = 401;
@@ -34,10 +35,9 @@ public class Fase2 {
             constantes = new HashMap<>();
             tokens = new ArrayList<>();
 
-
             // Solicita texto
             System.out.print("Ingrese un texto: ");
-            StringBuilder textoIngresado = new StringBuilder();
+            textoIngresado = new StringBuilder();
 
             // Lee líneas de texto hasta que aparezca una en blanco
             String linea;
@@ -113,10 +113,9 @@ public class Fase2 {
                     System.out.printf("| %-17s | %-5s | %-10s%n", identificador, identificadores.get(identificador), lineas);
                 });
 
-            } else {
-                System.out.println("¡Hola Mundo! No se encontraron tokens.");
+            } if (!encontradasCoincidencias || !tokens.isEmpty()) {
+                imprimirLineasConNumero(textoIngresado.toString());
             }
-
 
             System.out.print("\n¿Quieres repetir el proceso? (1: Sí, 2: No): ");
 
@@ -136,6 +135,34 @@ public class Fase2 {
         // Cerrar el scanner
         scanner.close();
     }
+
+    private static void imprimirLineasConNumero(String texto) {
+        Scanner scanner = new Scanner(texto);
+
+        int noLinea = 1;
+
+        System.out.printf("\nTABLA DE ERRORES\n| %-15s | %s%n", "Identificador", "No Linea");
+        while (scanner.hasNextLine()) {
+            String identificador = scanner.nextLine();
+            boolean esError = true;
+
+            for (int i = 0; i < tokens.size(); i++) {
+                if (identificador.matches(".*\\b" + tokens.get(i).getNombre() + "\\b.*")) {
+                    esError = false;
+                    break;
+                }
+            }
+
+            if (esError) {
+                System.out.printf("| %-15s | %s%n", identificador, noLinea);
+            }
+
+            noLinea++;
+        }
+
+        scanner.close();
+    }
+
 
     //Metodo para solo buscar tokens coincidentes y decidir si existen o no el modulo de errores
     private static int buscarTokens(String texto, String regex, int startIndex) {
