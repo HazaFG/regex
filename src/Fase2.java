@@ -22,6 +22,12 @@ public class Fase2 {
     private static Map<String, Integer> identificadores = new HashMap<>();
     private static Map<String, Integer> constantes = new HashMap<>();
     static ArrayList<Token> tokens = new ArrayList<>();
+    static ArrayList<Error> errores = new ArrayList<>();
+    private static final String[] PALABRAS_RESERVADAS = {
+            "SELECT", "FROM", "WHERE", "IN", "AND", "OR", "CREATE", "TABLE",
+            "CHAR", "NUMERIC", "NOT", "NULL", "CONSTRAINT", "KEY", "PRIMARY",
+            "FOREIGN", "REFERENCES", "INSERT", "INTO", "VALUES"
+    };
 
         public static void main(String[] args) {
 
@@ -97,10 +103,20 @@ public class Fase2 {
         Matcher matcher = pattern.matcher(texto);
 
         int i = startIndex;
+
+        // Verificar si hay errores léxicos antes de entrar al ciclo
+        if (!errores.isEmpty()) {
+            System.out.println("Existen errores léxicos. No se pueden mostrar tokens.");
+            return i;
+        }
+
         while (matcher.find()) {
             int lineMatch = obtenerLineaCoincidente(texto, matcher.start());
             String token = matcher.group();
-            TipoValor tipoValor = determinarTipoYValor(token);
+            TipoValor tipoValor = determinarTipoYValor(token, lineMatch);
+
+            // Se omitió la verificación de errores aquí para evitar imprimir múltiples mensajes por cada coincidencia
+
             System.out.printf("| %-4s | %-10s | %-15s | %-10s | %-10s%n", i, lineMatch, token, tipoValor.getTipo(),
                     tipoValor.getValor());
             tokens.add(new Token(i, lineMatch, token, tipoValor.getTipo(), tipoValor.getValor()));
@@ -122,7 +138,15 @@ public class Fase2 {
     }
 
     // Método para determinar el tipo y valor de la palabra
-    private static TipoValor determinarTipoYValor(String palabra) {
+    private static TipoValor determinarTipoYValor(String palabra, int noLinea) {
+        if (!esPalabraReservada(palabra)) {
+            // La palabra no es una palabra reservada válida, manejar como error léxico
+            System.out.println("Error léxico: La palabra '" + palabra + "' no es una palabra reservada válida.");
+            // También podrías almacenar el error en una lista de errores léxicos si lo necesitas.
+            errores.add(new Error(palabra, noLinea));
+
+            return new TipoValor(0, 0);
+        }
         switch (palabra.toUpperCase()) {
             case "SELECT":
                 return new TipoValor(1, 10);
@@ -213,6 +237,25 @@ public class Fase2 {
 
         return new TipoValor(0, 0);
     }
+
+    private static boolean esPalabraReservada(String palabra) {
+        for (String reservada : PALABRAS_RESERVADAS) {
+            if (palabra.length() == reservada.length() && palabra.charAt(0) == reservada.charAt(0)) {
+                boolean esIgual = true;
+                for (int i = 1; i < reservada.length(); i++) {
+                    if (palabra.charAt(i) != reservada.charAt(i)) {
+                        esIgual = false;
+                        break;
+                    }
+                }
+                if (esIgual) {
+                    return true; // Es una palabra reservada válida
+                }
+            }
+        }
+        return false; // No es una palabra reservada válida
+    }
+
     private static int obtenerCodigoConstante(String constante, Map<String, Integer> mapa) {
         if (!mapa.containsKey(constante)) {
             if (constante.matches("'\\w+'")) {
