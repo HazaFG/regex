@@ -11,12 +11,11 @@
 // Miguel Angel Lazcano Ortega
 // Carlos André Campa Molina
 
-import java.beans.SimpleBeanInfo;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AlbertoCode {
+public class FaseDos {
 
     private static int valorIdentificador = 401;
     private static int valorConstante = 600;
@@ -174,29 +173,29 @@ public class AlbertoCode {
     }
 
     // Método para determinar el tipo y valor de la palabra
-    private static AlbertoCode.TipoValor determinarTipoYValor(String palabra) {
+    private static FaseDos.TipoValor determinarTipoYValor(String palabra) {
         for (int i = 0; i < PALABRAS_CLAVE.length; i++) {
             if (palabra.equalsIgnoreCase(PALABRAS_CLAVE[i])) {
-                return new AlbertoCode.TipoValor(1, CODIGOS[i]);
+                return new FaseDos.TipoValor(1, CODIGOS[i]);
             }
         }
 
         // Identificar constantes alfanuméricas
         if (palabra.matches("'\\w+'")) {
-            return new AlbertoCode.TipoValor(6, obtenerCodigoConstante(palabra, constantes));
+            return new FaseDos.TipoValor(6, obtenerCodigoConstante(palabra, constantes));
         }
 
         // Identificar constantes numéricas
         if (palabra.matches("\\b\\d+\\b")) {
-            return new AlbertoCode.TipoValor(6, obtenerCodigoConstante(palabra, constantes));
+            return new FaseDos.TipoValor(6, obtenerCodigoConstante(palabra, constantes));
         }
 
         // Identificar identificadores
         if (palabra.matches("\\b[a-zA-Z_]\\w*\\b")) {
-            return new AlbertoCode.TipoValor(4, obtenerCodigoConstante(palabra, identificadores));
+            return new FaseDos.TipoValor(4, obtenerCodigoConstante(palabra, identificadores));
         }
 
-        return new AlbertoCode.TipoValor(0, 0);
+        return new FaseDos.TipoValor(0, 0);
     }
 
 
