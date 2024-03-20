@@ -21,6 +21,8 @@ public class Fase2 {
     private static int valorConstante = 600;
     private static Map<String, Integer> identificadores = new HashMap<>();
     private static Map<String, Integer> constantes = new HashMap<>();
+    private static boolean opcion = true;
+
     static ArrayList<Token> tokens = new ArrayList<>();
 
         public static void main(String[] args) {
@@ -28,7 +30,7 @@ public class Fase2 {
         Scanner scanner = new Scanner(System.in);
         StringBuilder textoIngresado;
 
-        while (true) {
+        do {
             valorIdentificador = 401;
             valorConstante = 600;
             identificadores = new HashMap<>();
@@ -117,20 +119,11 @@ public class Fase2 {
                 imprimirLineasConNumero(textoIngresado.toString());
             }
 
-            System.out.print("\n¿Quieres repetir el proceso? (1: Sí, 2: No): ");
 
-            int opcion = scanner.nextInt();
-
-            if (opcion == 2) {
-                System.out.println("\nPrograma cerrado\n");
-                break; // Salir del bucle
-            } else if (opcion != 1) {
-                System.out.println("\nOpción no válida. Por favor, ingresa 1 o 2\n");
-            }
 
             // Limpiar el búfer del scanner
             scanner.nextLine();
-        }
+        }while(opcion == true);
 
         // Cerrar el scanner
         scanner.close();
