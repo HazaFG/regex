@@ -13,6 +13,11 @@ public class Token {
         this.valor = valor;
     }
 
+    public Token (String nombre, int noLinea){
+        this.nombre = nombre;
+        this.noLinea = noLinea;
+    }
+
     public int getId() {
         return id;
     }
