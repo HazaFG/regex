@@ -22,13 +22,22 @@ public class Fase2 {
     private static Map<String, Integer> identificadores = new HashMap<>();
     private static Map<String, Integer> constantes = new HashMap<>();
     private static boolean opcion = true;
-
     static ArrayList<Token> tokens = new ArrayList<>();
 
-        public static void main(String[] args) {
+    private static final String[] PALABRAS_CLAVE = {
+            "SELECT", "FROM", "WHERE", "IN", "AND", "OR", "CREATE", "TABLE", "CHAR", "NUMERIC",
+            "NOT", "NULL", "CONSTRAINT", "KEY", "PRIMARY", "FOREIGN", "REFERENCES", "INSERT",
+            "INTO", "VALUES", ",", ".", "(", ")", "‘", "+", "-", "*", "/", ">", "<", "=", ">=", "<="
+    };
+
+    private static final int[] CODIGOS = {
+            10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+            50, 51, 52, 53, 54, 70, 71, 72, 73, 81, 82, 83, 84, 85
+    };
+
+    public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        StringBuilder textoIngresado;
 
         do {
             valorIdentificador = 401;
@@ -37,9 +46,10 @@ public class Fase2 {
             constantes = new HashMap<>();
             tokens = new ArrayList<>();
 
+
             // Solicita texto
             System.out.print("Ingrese un texto: ");
-            textoIngresado = new StringBuilder();
+            StringBuilder textoIngresado = new StringBuilder();
 
             // Lee líneas de texto hasta que aparezca una en blanco
             String linea;
@@ -51,111 +61,67 @@ public class Fase2 {
             //System.out.println(textoIngresado);
             int i = 1;
 
-            boolean encontradasCoincidencias = buscarTokens(textoIngresado.toString(),
+            i = 1;
+            valorIdentificador = 401;
+            valorConstante = 600;
+            identificadores = new HashMap<>();
+            constantes = new HashMap<>();
+            tokens = new ArrayList<>();
+
+            // Tabla 1
+            System.out.printf("TABLA LÉXICA\n| %-4s | %-10s | %-15s | %-10s | %-10s%n", "No°", "Linea", "TOKEN", "Tipo", "Código");
+            // Buscar y mostrar tokens encontrados con su tipo y código
+            i = buscarYMostrarTokens(textoIngresado.toString(),
                     "\\b(SELECT|FROM|WHERE|AND|OR|INSERT|UPDATE|DELETE|IN|CREATE|TABLE|CHAR|NUMERIC|NOT|NULL|CONSTRAINT|KEY|PRIMARY|FOREIGN|REFERENCES|INTO)\\b|"
                             + "[,‘]|"
                             + "[+\\-*/]|"
                             + ">=?|<=?|[><=]|"
                             + "'\\w+'|"
                             + "\\b\\d+\\b|"
-                            + "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b", i) > i;
+                            + "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b", i);
 
-
-
-            if (encontradasCoincidencias) {
-                i = 1;
-                valorIdentificador = 401;
-                valorConstante = 600;
-                identificadores = new HashMap<>();
-                constantes = new HashMap<>();
-                tokens = new ArrayList<>();
-
-                // Tabla 1
-                System.out.printf("TABLA LÉXICA\n| %-4s | %-10s | %-15s | %-10s | %-10s%n", "No°", "Linea", "TOKEN", "Tipo", "Código");
-                // Buscar y mostrar tokens encontrados con su tipo y código
-                i = buscarYMostrarTokens(textoIngresado.toString(),
-                        "\\b(SELECT|FROM|WHERE|AND|OR|INSERT|UPDATE|DELETE|IN|CREATE|TABLE|CHAR|NUMERIC|NOT|NULL|CONSTRAINT|KEY|PRIMARY|FOREIGN|REFERENCES|INTO)\\b|"
-                                + "[,‘]|"
-                                + "[+\\-*/]|"
-                                + ">=?|<=?|[><=]|"
-                                + "'\\w+'|"
-                                + "\\b\\d+\\b|"
-                                + "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b", i);
-
-                // Tabla 2
-                //TABLA CONSTANTES EJEMPLO (PRUEBA)
-                System.out.printf("\nTABLA DE CONSTANTES\n| %-4s | %-10s | %-4s | %-10s%n", "No°", "Constante", "Tipo", "Valor");
-                for(int j = 0; j < tokens.size(); j++){
-                    if(tokens.get(j).getTipo() == 6){
-                        System.out.printf("| %-4s | %-10s | %-4s | %-10s%n", tokens.get(j).getId(),
-                                tokens.get(j).getNombre(), tokens.get(j).getTipo(), tokens.get(j).getValor());
-                    }
+            // Tabla 2
+            //TABLA CONSTANTES EJEMPLO (PRUEBA)
+            System.out.printf("\nTABLA DE CONSTANTES\n| %-4s | %-10s | %-4s | %-10s%n", "No°", "Constante", "Tipo", "Valor");
+            for(int j = 0; j < tokens.size(); j++){
+                if(tokens.get(j).getTipo() == 6){
+                    System.out.printf("| %-4s | %-10s | %-4s | %-10s%n", tokens.get(j).getId(),
+                            tokens.get(j).getNombre(), tokens.get(j).getTipo(), tokens.get(j).getValor());
                 }
-
-                // Tabla de Identificadores
-                System.out.printf("\nTABLA DE IDENTIFICADORES\n| %-17s | %-5s | %-10s%n", "Identificador", "Valor", "Linea");
-                Map<String, Set<Integer>> identificadoresRepetidos = new HashMap<>();
-
-                for (int j = 0; j < tokens.size(); j++) {
-                    if (tokens.get(j).getTipo() == 4) {
-                        String identificador = tokens.get(j).getNombre();
-                        int valor = tokens.get(j).getValor();
-                        int lineaa = tokens.get(j).getNoLinea();
-
-                        identificadores.put(identificador, valor);
-
-                        if (!identificadoresRepetidos.containsKey(identificador)) {
-                            identificadoresRepetidos.put(identificador, new HashSet<>());
-                        }
-                        identificadoresRepetidos.get(identificador).add(lineaa);
-                    }
-                }
-
-                identificadoresRepetidos.forEach((identificador, lineas) -> {
-                    System.out.printf("| %-17s | %-5s | %-10s%n", identificador, identificadores.get(identificador), lineas);
-                });
-
-            } if (!encontradasCoincidencias || !tokens.isEmpty()) {
-                imprimirLineasConNumero(textoIngresado.toString());
             }
 
+            // Tabla de Identificadores
+            System.out.printf("\nTABLA DE IDENTIFICADORES\n| %-17s | %-5s | %-10s%n", "Identificador", "Valor", "Linea");
+            Map<String, Set<Integer>> identificadoresRepetidos = new HashMap<>();
+
+            for (int j = 0; j < tokens.size(); j++) {
+                if (tokens.get(j).getTipo() == 4) {
+                    String identificador = tokens.get(j).getNombre();
+                    int valor = tokens.get(j).getValor();
+                    int lineaa = tokens.get(j).getNoLinea();
+
+                    identificadores.put(identificador, valor);
+
+                    if (!identificadoresRepetidos.containsKey(identificador)) {
+                        identificadoresRepetidos.put(identificador, new HashSet<>());
+                    }
+                    identificadoresRepetidos.get(identificador).add(lineaa);
+                }
+            }
+
+            identificadoresRepetidos.forEach((identificador, lineas) -> {
+                System.out.printf("| %-17s | %-5s | %-10s%n", identificador, identificadores.get(identificador), lineas);
+            });
 
 
             // Limpiar el búfer del scanner
             scanner.nextLine();
-        }while(opcion == true);
+
+        }while (opcion == true);
 
         // Cerrar el scanner
         scanner.close();
     }
-
-    private static void imprimirLineasConNumero(String texto) {
-        Scanner scanner = new Scanner(texto);
-
-        int noLinea = 1;
-
-        System.out.printf("\nTABLA DE ERRORES\n| %-15s | %s%n", "Identificador", "No Linea");
-        while (scanner.hasNextLine()) {
-            String identificador = scanner.nextLine();
-            boolean esError = true;
-
-            for (int i = 0; i < tokens.size(); i++) {
-                if (identificador.matches(".*\\b" + tokens.get(i).getNombre() + "\\b.*")) {
-                    esError = false;
-                    break;
-                }
-            }
-
-            if (esError) {
-                System.out.printf("| %-15s | %s%n", identificador, noLinea);
-            }
-
-            noLinea++;
-        }
-
-        scanner.close();
-    }
-
 
     //Metodo para solo buscar tokens coincidentes y decidir si existen o no el modulo de errores
     private static int buscarTokens(String texto, String regex, int startIndex) {
@@ -207,77 +173,10 @@ public class Fase2 {
 
     // Método para determinar el tipo y valor de la palabra
     private static TipoValor determinarTipoYValor(String palabra) {
-        switch (palabra.toUpperCase()) {
-            case "SELECT":
-                return new TipoValor(1, 10);
-            case "FROM":
-                return new TipoValor(1, 11);
-            case "WHERE":
-                return new TipoValor(1, 12);
-            case "IN":
-                return new TipoValor(1, 13);
-            case "AND":
-                return new TipoValor(1, 14);
-            case "OR":
-                return new TipoValor(1, 15);
-            case "CREATE":
-                return new TipoValor(1, 16);
-            case "TABLE":
-                return new TipoValor(1, 17);
-            case "CHAR":
-                return new TipoValor(1, 18);
-            case "NUMERIC":
-                return new TipoValor(1, 19);
-            case "NOT":
-                return new TipoValor(1, 20);
-            case "NULL":
-                return new TipoValor(1, 21);
-            case "CONSTRAINT":
-                return new TipoValor(1, 22);
-            case "KEY":
-                return new TipoValor(1, 23);
-            case "PRIMARY":
-                return new TipoValor(1, 24);
-            case "FOREIGN":
-                return new TipoValor(1, 25);
-            case "REFERENCES":
-                return new TipoValor(1, 26);
-            case "INSERT":
-                return new TipoValor(1, 27);
-            case "INTO":
-                return new TipoValor(1, 28);
-            case "VALUES":
-                return new TipoValor(1, 29);
-            case ",":
-                return new TipoValor(5, 50);
-            case ".":
-                return new TipoValor(5, 51);
-            case "(":
-                return new TipoValor(5, 52);
-            case ")":
-                return new TipoValor(5, 53);
-            case "‘":
-                return new TipoValor(5, 54);
-            case "+":
-                return new TipoValor(7, 70);
-            case "-":
-                return new TipoValor(7, 71);
-            case "*":
-                return new TipoValor(7, 72);
-            case "/":
-                return new TipoValor(7, 73);
-            case ">":
-                return new TipoValor(8, 81);
-            case "<":
-                return new TipoValor(8, 82);
-            case "=":
-                return new TipoValor(8, 83);
-            case ">=":
-                return new TipoValor(8, 84);
-            case "<=":
-                return new TipoValor(8, 85);
-            default:
-                break;
+        for (int i = 0; i < PALABRAS_CLAVE.length; i++) {
+            if (palabra.equalsIgnoreCase(PALABRAS_CLAVE[i])) {
+                return new TipoValor(1, CODIGOS[i]);
+            }
         }
 
         // Identificar constantes alfanuméricas
@@ -297,6 +196,8 @@ public class Fase2 {
 
         return new TipoValor(0, 0);
     }
+
+
     private static int obtenerCodigoConstante(String constante, Map<String, Integer> mapa) {
         if (!mapa.containsKey(constante)) {
             if (constante.matches("'\\w+'")) {
