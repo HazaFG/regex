@@ -65,180 +65,45 @@ public class AnalizadorSintactico {
 
   private static void inicializarTablaSintactica() {
     // Tabla sintactica de la imagen del profe
-    tablaSintactica.put(
-        300,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(10, new Integer[] {10, 301, 11, 306, 310});
-          }
-        });
+    tablaSintactica.put(300, new HashMap<Integer, Integer[]>() {{put(10, new Integer[] {10, 301, 11, 306, 310});}});
 
-    tablaSintactica.put(
-        301,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(400, new Integer[] {302});
-            put(72, new Integer[] {72});
-          }
-        });
+    tablaSintactica.put(301, new HashMap<Integer, Integer[]>() {{put(400, new Integer[] {302}); put(72, new Integer[] {72});}});
 
-    tablaSintactica.put(
-        302,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(400, new Integer[] {304, 303});
-          }
-        });
+    tablaSintactica.put(302, new HashMap<Integer, Integer[]>() {{put(400, new Integer[] {304, 303});}});
 
-    tablaSintactica.put(
-        303,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(11, new Integer[] {99});
-            put(50, new Integer[] {50, 302});
-            put(199, new Integer[] {99});
-          }
-        });
+    tablaSintactica.put(303, new HashMap<Integer, Integer[]>() {{ put(11, new Integer[] {99}); put(50, new Integer[] {50, 302}); put(199, new Integer[] {99});}});
 
-    tablaSintactica.put(
-        304,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(400, new Integer[] {400, 305});
-          }
-        });
+    tablaSintactica.put(304, new HashMap<Integer, Integer[]>() {{put(400, new Integer[] {400, 305});}});
 
-    tablaSintactica.put(
-        305,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(8, new Integer[] {99});
-            put(11, new Integer[] {99});
-            put(13, new Integer[] {99});
-            put(14, new Integer[] {99});
-            put(15, new Integer[] {99});
-            put(50, new Integer[] {99});
-            put(51, new Integer[] {51, 400});
-            put(53, new Integer[] {99});
-            put(199, new Integer[] {99});
-          }
-        });
+    tablaSintactica.put(305, new HashMap<Integer, Integer[]>() {{put(8, new Integer[] {99});put(11, new Integer[] {99});put(13, new Integer[] {99});put(14, new Integer[] {99});put(15, new Integer[] {99});put(50, new Integer[] {99});put(51, new Integer[] {51, 400});put(53, new Integer[] {99});put(199, new Integer[] {99});}});
 
-    tablaSintactica.put(
-        306,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(400, new Integer[] {308, 307});
-          }
-        });
+    tablaSintactica.put(306, new HashMap<Integer, Integer[]>() {{put(400, new Integer[] {308, 307});}});
 
-    tablaSintactica.put(
-        307,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(12, new Integer[] {99});
-            put(50, new Integer[] {50, 306});
-            put(53, new Integer[] {99});
-            put(199, new Integer[] {99});
-          }
-        });
+    tablaSintactica.put(307, new HashMap<Integer, Integer[]>() {{put(12, new Integer[] {99});put(50, new Integer[] {50, 306});put(53, new Integer[] {99});put(199, new Integer[] {99});}});
 
-    tablaSintactica.put(
-        308,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(400, new Integer[] {400, 309});
-          }
-        });
+    tablaSintactica.put(308, new HashMap<Integer, Integer[]>() {{put(400, new Integer[] {400, 309});}});
 
-    tablaSintactica.put(
-        309,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(400, new Integer[] {400});
-            put(12, new Integer[] {99});
-            put(50, new Integer[] {99});
-            put(53, new Integer[] {99});
-            put(199, new Integer[] {99});
-          }
-        });
+    tablaSintactica.put(309, new HashMap<Integer, Integer[]>() {{put(400, new Integer[] {400});put(12, new Integer[] {99});put(50, new Integer[] {99});put(53, new Integer[] {99});put(199, new Integer[] {99});}});
 
-    tablaSintactica.put(
-        310,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(12, new Integer[] {12, 311});
-            put(53, new Integer[] {99});
-            put(199, new Integer[] {99});
-          }
-        });
+    tablaSintactica.put(310, new HashMap<Integer, Integer[]>() {{put(12, new Integer[] {12, 311});put(53, new Integer[] {99});put(199, new Integer[] {99});}});
 
-    tablaSintactica.put(
-        311,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(400, new Integer[] {313, 312});
-          }
-        });
+    tablaSintactica.put(311, new HashMap<Integer, Integer[]>() {{put(400, new Integer[] {313, 312});}});
 
-    tablaSintactica.put(
-        312,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(14, new Integer[] {317, 311});
-            put(15, new Integer[] {317, 311});
-            put(53, new Integer[] {99});
-            put(199, new Integer[] {99});
-          }
-        });
+    tablaSintactica.put(312, new HashMap<Integer, Integer[]>() {{put(14, new Integer[] {317, 311});put(15, new Integer[] {317, 311});put(53, new Integer[] {99});put(199, new Integer[] {99});}});
 
-    tablaSintactica.put(
-        313,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(400, new Integer[] {304, 314});
-          }
-        });
+    tablaSintactica.put(313, new HashMap<Integer, Integer[]>() {{put(400, new Integer[] {304, 314});}});
 
-    tablaSintactica.put(
-        314,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(8, new Integer[] {315, 316});
-            put(13, new Integer[] {13, 52, 300, 53});
-          }
-        });
+    tablaSintactica.put(314, new HashMap<Integer, Integer[]>() {{put(8, new Integer[] {315, 316});put(13, new Integer[] {13, 52, 300, 53});}});
 
-    tablaSintactica.put(
-        315,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(8, new Integer[] {8});
-          }
-        });
+    tablaSintactica.put(315, new HashMap<Integer, Integer[]>() {{put(8, new Integer[] {8});}});
 
-    tablaSintactica.put(
-        316,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(400, new Integer[] {304});
-            put(54, new Integer[] {54, 318, 54});
-            put(62, new Integer[] {318});
-            put(61, new Integer[] {319});
-          }
-        });
+    tablaSintactica.put(316, new HashMap<Integer, Integer[]>() {{put(400, new Integer[] {304});put(54, new Integer[] {54, 318, 54});put(62, new Integer[] {318});put(61, new Integer[] {319});}});
 
     tablaSintactica.put(317, new HashMap<Integer, Integer[]>() {{put(14, new Integer[] {14}); put(15, new Integer[] {15});}});
 
     tablaSintactica.put( 318,  new HashMap<Integer, Integer[]>() {{ put(62, new Integer[] {62});}});
 
-    tablaSintactica.put(
-        319,
-        new HashMap<Integer, Integer[]>() {
-          {
-            put(61, new Integer[] {61});
-          }
-        });
+    tablaSintactica.put(319, new HashMap<Integer, Integer[]>() {{put(61, new Integer[] {61});}});
   }
 
   static List<Token> tokenizarSentenciaSQL(String sentencia) {
@@ -471,7 +336,7 @@ public class AnalizadorSintactico {
       List<Token> tokens = analizador.tokenizarSentenciaSQL(String.valueOf(sentenciaBuilder));
       AnalizadorSintacticoLL analizadorLL = analizador.new AnalizadorSintacticoLL(tokens);
       boolean esValido = analizadorLL.analizar();
-      String mensaje = (esValido) ? "No hay errores" : "Ocurrieron pedillos";
+      String mensaje = (esValido) ? "No hay errores" : "";
       System.out.println(mensaje);
     } while (!flujo);
   }
@@ -492,10 +357,6 @@ public class AnalizadorSintactico {
 
     public Integer getTipo() {
       return tipo;
-    }
-
-    public String getValor() {
-      return valor;
     }
 
     public int getNumeroLinea() {
