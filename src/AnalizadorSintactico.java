@@ -42,8 +42,10 @@ public class AnalizadorSintactico {
     tablaSimbolos.put(".", 51);
     tablaSimbolos.put("(", 52);
     tablaSimbolos.put(")", 53);
-    tablaSimbolos.put("`", 54); // Este es un backtick, no una comilla simple
-    tablaSimbolos.put("'", 55);
+    tablaSimbolos.put("'", 54);
+//    tablaSimbolos.put("'", 54);
+    tablaSimbolos.put(";", 55);
+
 
     // Operadores
     tablaSimbolos.put("+", 70);
@@ -65,6 +67,89 @@ public class AnalizadorSintactico {
 
   private static void inicializarTablaSintactica() {
     // Tabla sintactica de la imagen del profe
+
+    tablaSintactica.put(200, new HashMap<Integer, Integer[]>() {{
+      put(16, new Integer[] {16, 17, 400, 52, 202, 53, 55, 201});
+    }});
+
+    tablaSintactica.put(201, new HashMap<Integer, Integer[]>() {{
+      put(16, new Integer[] {200});
+      put(27, new Integer[] {211});
+      put(199, new Integer[] {99});
+      put(10, new Integer[] {300});
+    }});
+
+    tablaSintactica.put(202, new HashMap<Integer, Integer[]>() {{
+      put(400, new Integer[] {400, 203, 52, 61, 53, 204, 205});
+    }});
+
+    tablaSintactica.put(203, new HashMap<Integer, Integer[]>() {{
+      put(18, new Integer[] {18});
+      put(19, new Integer[] {19});
+    }});
+
+    tablaSintactica.put(204, new HashMap<Integer, Integer[]>() {{
+      put(20, new Integer[] {20, 21});
+      put(50, new Integer[] {99});
+    }});
+
+    tablaSintactica.put(205, new HashMap<Integer, Integer[]>() {{
+      put(50, new Integer[] {50, 206});
+      put(53, new Integer[] {99});
+    }});
+
+    tablaSintactica.put(206, new HashMap<Integer, Integer[]>() {{
+      put(400, new Integer[] {202});
+      put(22, new Integer[] {207});
+    }});
+
+    tablaSintactica.put(207, new HashMap<Integer, Integer[]>() {{
+      put(22, new Integer[] {22, 400, 208, 52, 400, 53, 209});
+    }});
+
+    tablaSintactica.put(208, new HashMap<Integer, Integer[]>() {{
+      put(24, new Integer[] {24, 23});
+      put(25, new Integer[] {25, 23});
+    }});
+
+    tablaSintactica.put(209, new HashMap<Integer, Integer[]>() {{
+      put(26, new Integer[] {26, 400, 52, 400, 53, 210});
+      put(50, new Integer[] {50, 207});
+      put(53, new Integer[] {99});
+    }});
+
+    tablaSintactica.put(210, new HashMap<Integer, Integer[]>() {{
+      put(50, new Integer[] {50, 207});
+      put(53, new Integer[] {99});
+    }});
+
+    tablaSintactica.put(211, new HashMap<Integer, Integer[]>() {{
+      put(27, new Integer[] {27, 28, 400, 29, 52, 212, 53, 55, 215});
+    }});
+
+    tablaSintactica.put(212, new HashMap<Integer, Integer[]>() {{
+      put(54, new Integer[] {213, 214});
+      put(61, new Integer[] {213, 214});
+      put(62, new Integer[] {213, 214});
+    }});
+
+    tablaSintactica.put(213, new HashMap<Integer, Integer[]>() {{
+      put(54, new Integer[] {54, 62, 54});
+      put(61, new Integer[] {61});
+      put(62, new Integer[] {62});
+    }});
+
+    tablaSintactica.put(214, new HashMap<Integer, Integer[]>() {{
+      put(50, new Integer[] {50, 212});
+      put(53, new Integer[] {99});
+    }});
+
+    tablaSintactica.put(215, new HashMap<Integer, Integer[]>() {{
+      put(16, new Integer[] {200});
+      put(27, new Integer[] {211});
+      put(199, new Integer[] {99});
+    }});
+
     tablaSintactica.put(300, new HashMap<Integer, Integer[]>() {{put(10, new Integer[] {10, 301, 11, 306, 310});}});
 
     tablaSintactica.put(301, new HashMap<Integer, Integer[]>() {{put(400, new Integer[] {302}); put(72, new Integer[] {72});}});
@@ -126,7 +211,7 @@ public class AnalizadorSintactico {
             tokens.add(new Token(parte, 400, parte, numeroLinea));
           } else {
             // En el caso de encontrarse con identificadores de #
-            if (parte.matches("[a-zA-Z#]*")) {
+            if (parte.matches("[a-zA-Z#_0-9a-zA-Z]*")) {
               tokens.add(new Token(parte, 400, parte, numeroLinea));
               // En el caso de encontrarse con constantes
             } else if (parte.matches("^(‘|’|').*(’|'|‘)$|\\d*")) {
@@ -154,7 +239,7 @@ public class AnalizadorSintactico {
     // Regex que filtra todo
     public static String regex =
         "(‘|’|') ?[a-zA-Z@!\\$\\%#\\\\\\(\\)_\\-0-9\\[\\]\\{\\}?"
-            + " ]*(’|'|‘)|>=|<=|[a-zA-Z0-9\\$@#!\\-\\*]+|(,|.)";
+            + " ]*(’|'|‘)|>=|<=|[a-zA-Z0-9_\\$@#!\\-\\*]+|(,|.)";
 
     // Funcion para filtrar las palabras de SQL
     public static String[] GetFilteredWords(String text) {
@@ -191,7 +276,7 @@ public class AnalizadorSintactico {
     public AnalizadorSintacticoLL(List<Token> tokens) {
       this.pila = new Stack<>();
       this.pila.push(199); // Fin de archivo
-      this.pila.push(300); // Símbolo inicial de la gramática
+      this.pila.push(201); // Símbolo inicial de la gramática
       this.tokens = tokens;
       this.apuntadorToken = 0;
     }
@@ -245,7 +330,7 @@ public class AnalizadorSintactico {
       return true;
     }
     ;
-    return simbolo < 300;
+    return simbolo < 200;
   }
 
   private boolean esEpsilon(int simbolo) {
@@ -288,6 +373,7 @@ public class AnalizadorSintactico {
       case 53:
       case 54:
       case 50:
+      case 55:
       case 51:
         descripcionError = "Se esperaba Delimitador.";
         codigoError = 205;
